@@ -1,38 +1,50 @@
-Question Explanation:
+import java.util.ArrayList;   // Importing ArrayList to store integers
+import java.util.List;        // Importing List interface for flexibility
+import java.util.Scanner;     // Importing Scanner for user input
 
-writing a Java program to calculate the sum of a list of integers using autoboxing and unboxing, along with methods to parse strings into their respective wrapper classes (e.g., Integer.parseInt()).
+public class IntegerSumCalculator {
 
-Steps to implement:
-1. Create a List of Integers: Initialize a List<Integer> to hold the integers.
-2. Autoboxing: Use autoboxing to convert primitive int values to Integer objects automatically when adding to the list.
-3. Unboxing: Use unboxing to convert Integer objects back to int for sum calculation.
-4. Parse Strings: Create a utility method to parse strings to integers using Integer.parseInt().
-5. Calculate the Sum: Use a loop or Java 8 streams to calculate the sum of the list.
+    // Method to parse a string into an Integer
+    public static Integer parseStringToInteger(String str) {
+        try {
+            return Integer.parseInt(str); // Converts string to Integer (Autoboxing happens here)
+        } catch (NumberFormatException e) { // Handles invalid inputs that cannot be converted
+            System.out.println("Invalid number format: " + str);
+            return null; // Return null for invalid input
+        }
+    }
 
-  
-Java Program:
+    // Method to calculate the sum of a list of Integers
+    public static int calculateSum(List<Integer> numbers) {
+        int sum = 0; // Variable to store the sum
+        for (Integer num : numbers) { // Iterates through the list
+            if (num != null) { // Ensures null values are ignored
+                sum += num; // Adds the value to sum (Unboxing happens here)
+            }
+        }
+        return sum; // Returns the total sum
+    }
 
-parseStringToInteger(): This method parses a string into an Integer. It catches any NumberFormatException if the string is not a valid number.
-calculateSum(): This method calculates the sum of a list of integers. Java automatically performs unboxing when adding Integer values to sum (an int).
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in); // Creating Scanner object to take input
+        List<Integer> numbers = new ArrayList<>(); // List to store integer inputs
 
+        System.out.println("Enter numbers (type 'done' to finish):");
 
+        while (true) { // Infinite loop until 'done' is entered
+            String input = scanner.nextLine(); // Reads user input as a string
+            if (input.equalsIgnoreCase("done")) { // Checks if user wants to stop
+                break; // Exit loop
+            }
+            Integer number = parseStringToInteger(input); // Converts input to Integer
+            if (number != null) { // Adds only valid numbers to the list
+                numbers.add(number); // Autoboxing: Converts int to Integer automatically
+            }
+        }
 
+        scanner.close(); // Closing the scanner to prevent memory leaks
 
-Test Cases:
-
-Test Case 1:
-Input: 10, 20, 30, "40", "50"
-Expected Output: The sum of the list is: 150
-Description: The list contains a mix of primitive integers and integers parsed from strings.
-
-Test Case 2:
-Input: "100", "200", "300"
-Expected Output: The sum of the list is: 600
-Description: All values are parsed from strings, and the sum is calculated.
-
-Test Case 3:
-Input: "50", "invalid", "70"
-Expected Output:
-Invalid number format: invalid
-The sum of the list is: 120
-Description: One of the inputs is not a valid integer, so it's skipped, and the sum of valid values is calculated.
+        // Calculating and displaying the sum of valid numbers entered
+        System.out.println("The sum of the list is: " + calculateSum(numbers));
+    }
+}
